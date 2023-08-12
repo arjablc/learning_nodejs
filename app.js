@@ -11,25 +11,26 @@ app.use(express.urlencoded({ extended: true }));
 //setting up ejs and telling nodejs to use ejs
 app.set("view engine", "ejs");
 
-
-app.get("/", (req, res)=>{
+app.get("/", (req, res) => {
 	res.render("home.ejs");
 });
 
 app.get("/login", (req, res) => {
 	res.render("login_page.ejs");
 });
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
 	const { userName, password } = req.body;
-	//this will create a new entity in the 
+	//this will create a new entity in the
 	//user table with the name and the password columns
-	//filled with the data provided into the request 
+	//filled with the data provided into the request
 	//coming from the login_page.ejs file(frontend)
-	user.create({
+	await user.create({
 		name: userName,
 		password: password,
 	});
 
+	//? Async await seems eerily similar to dart
+	res.redirect("/");
 });
 
 app.get("/variable", (req, res) => {
